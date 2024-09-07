@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      {{ msg }}
+      <h2>{{web.title}}</h2>
+      <h2>{{web.URL}}</h2>
+      <h2>{{num}}</h2>
+    </div>
+    <script type="module">
+        import { createApp,reactive,ref } from './vue.esm-browser.js'
+        createApp({
+        setup() {
+          const web = reactive({ title: "编程", URL: "code.com" })
+          const num=ref(10)
+          num.value=20
+          return {
+            msg: "hello vue3",
+            web,
+            num
+          }
+
+        }
+      }).mount("#app");
+    </script>
+  </body>
+</html>

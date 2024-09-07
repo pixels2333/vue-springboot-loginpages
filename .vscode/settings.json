@@ -1,0 +1,9 @@
+{
+    "livePreview.defaultPreviewPath": "/study-project-frontend/index.html",
+    "java.compile.nullAnalysis.mode": "disabled",
+    "java.project.sourcePaths": [
+        "study-project-frontend/node_modules"
+    ],
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "git.ignoreLimitWarning": true
+}
