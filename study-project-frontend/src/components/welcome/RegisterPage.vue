@@ -57,7 +57,7 @@ const form = reactive({
   code: '',
   password: '',
   email: '',
-  password_repeat: ''
+  password_repeat: '',
 })
 </script>
 
