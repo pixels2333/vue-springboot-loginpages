@@ -11,7 +11,10 @@
 
         </div>
         <div style="width: 400px;background-color: white;">
-            <router-view />
+            <transition name="el-fade-in-linear">
+                <router-view />
+            </transition>
+
         </div>
     </div>
 </template>
@@ -20,7 +23,7 @@
 
 </script>
 <style scoped>
-.website-title{
+.website-title {
     position: absolute;
     bottom: 30px;
     left: 30px;

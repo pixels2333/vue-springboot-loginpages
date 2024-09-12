@@ -11,7 +11,6 @@ import com.study.vue.entity.Account;
 import com.study.vue.mapper.UserMapper;
 
 import jakarta.annotation.Resource;
-
 @Service
 public class AuthorizeService implements UserDetailsService {
 

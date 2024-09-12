@@ -35,7 +35,7 @@
             <el-divider direction="horizontal" content-position="center">
                 <span style="font-size: 13px;color: grey;">没有账号</span>
             </el-divider>
-            <el-button type="warning" size="default" plain style="margin-top: 5px;width: 270px;">注册账号</el-button>
+            <el-button type="warning" size="default" plain style="margin-top: 5px;width: 270px;" @click="router.push('/register')">注册账号</el-button>
         </div>
 
     </div>

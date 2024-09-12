@@ -16,7 +16,6 @@ import { get } from '@/net';
 import { ElMessage } from 'element-plus';
 // import router from '@/router';
 import { useRouter } from 'vue-router';
-const router = useRouter();
 const logout = () => {
     get('/api/auth/logout', (message) => {
         ElMessage.success(message)
@@ -25,4 +24,3 @@ const logout = () => {
 }
 </script>
 
-<style scoped></style>
