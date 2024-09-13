@@ -10,11 +10,15 @@
             <div style="margin-top: 5px;">在这里你可以同性交友,因为都是男的没有学java的女生</div>
 
         </div>
-        <div style="width: 400px;background-color: white;">
-            <transition name="el-fade-in-linear">
+        <div style="width: 400px;background-color: white;z-index: 1;">
+            <!-- <transition name="el-fade-in-linear">
                 <router-view />
-            </transition>
-
+            </transition> -->
+            <router-view v-slot="{ Component }">
+                <transition name="el-fade-in-linear">
+                    <component :is="Component"  />
+                </transition>
+            </router-view>
         </div>
     </div>
 </template>
