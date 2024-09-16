@@ -94,7 +94,6 @@ public class SecurityConfiguration {
 
         @Bean
         public AuthenticationManager authenticationManager(HttpSecurity security) throws Exception {
-
                 AuthenticationManagerBuilder authenticationManagerBuilder = security
                                 .getSharedObject(AuthenticationManagerBuilder.class);// 获取AuthenticationManagerBuilder
                 authenticationManagerBuilder.userDetailsService(authorizeService); // 配置UserDetailsService

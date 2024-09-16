@@ -8,7 +8,8 @@
         欢迎注册我们的学习新平台,请在下方填写注册信息
       </div>
       <div style="margin-top: 50px;">
-        <el-form :model="form" :rules="rules" label-width="10px" :inline="false" size="default" @validate="onValidateEmail">
+        <el-form :model="form" :rules="rules" label-width="10px" :inline="false" size="default"
+          @validate="onValidateEmail" ref="formRef">
           <el-form-item label="" prop="username">
             <el-input v-model="form.username" placeholder="用户名" :prefix-icon="User" size="default" clearable
               type="text"></el-input>
@@ -22,8 +23,8 @@
               type="password" style="margin-top: 0px;"></el-input>
           </el-form-item>
           <el-form-item label="" size="default" prop="email">
-            <el-input v-model="form.email" placeholder="电子邮箱地址" :prefix-Icon="Message" size="default" clearable type="email"
-              style="margin-top: 0px;"></el-input>
+            <el-input v-model="form.email" placeholder="电子邮箱地址" :prefix-Icon="Message" size="default" clearable
+              type="email" style="margin-top: 0px;"></el-input>
           </el-form-item>
           <el-form-item label="" size="default">
             <el-row :gutter="10" style="width: 100%;">
@@ -40,7 +41,7 @@
         </el-form>
       </div>
       <div style="margin-top: 100px;">
-        <el-button type="warning" style="width: 270px;" size="default" @click="null" plain>立即注册</el-button>
+        <el-button type="warning" style="width: 270px;" size="default" @click="register" plain>立即注册</el-button>
       </div>
       <div style="margin-top: 15px;color: gray;">
         已有账号?
@@ -58,6 +59,7 @@ import { ElMessage } from 'element-plus';
 import { reactive } from 'vue';
 import { post } from '@/net';
 import { ref } from 'vue';
+
 
 const form = reactive({
   username: '',
@@ -112,6 +114,10 @@ const rules = {
     { required: true, message: '验证码不能为空', trigger: ['blur', 'change'] },
   ],
 }
+
+
+const formRef = ref()
+
 const isEmailValid = ref(false)//邮箱是否合法
 
 const onValidateEmail = (prop, isValid) => {
@@ -119,6 +125,17 @@ const onValidateEmail = (prop, isValid) => {
     isEmailValid.value = isValid
 }
 
+const register = () => {
+  // ElMessage.info('测试')
+  formRef.value.validate(isValid => {
+    if (isValid) {
+      console.log(form)
+    }
+    else {
+      ElMessage.error('请检查输入是否正确')
+    }
+  })
+}
 </script>
 
 
