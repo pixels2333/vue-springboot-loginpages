@@ -34,7 +34,7 @@
                 </el-input>
               </el-col>
               <el-col :span="7" :offset="0">
-                <el-button type="success" size="default" :disabled="!isEmailValid">获取验证码</el-button>
+                <el-button type="success" size="default" :disabled="!isEmailValid" @click="validateEmail">获取验证码</el-button>
               </el-col>
             </el-row>
           </el-form-item>
@@ -135,6 +135,11 @@ const register = () => {
       ElMessage.error('请检查输入是否正确')
     }
   })
+}
+
+const validateEmail = () => {
+
+  post('/api/auth/valid-email', { email: form.email },ElMessage.success('验证码发送成功'))
 }
 </script>
 

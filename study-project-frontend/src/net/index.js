@@ -18,9 +18,9 @@ function post(
             withCredentials: true,
         })
         .then(({ data }) => {
-            if (data.success) 
+            if (data.success)
                 success(data.message, data.status);
-            else 
+            else
                 failure(data.message, data.status);
         })
         .catch(error);
@@ -40,7 +40,7 @@ function get(
             if (data.success) success(data.message, data.status);
             else failure(data.message, data.status);
         })
-        .catch((error)=>{
+        .catch((error) => {
             error(error);
         });
 }

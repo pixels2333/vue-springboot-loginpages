@@ -44,7 +44,11 @@ public class SecurityConfiguration {
 
                 return http
                                 .authorizeHttpRequests(authz -> authz
-                                                .anyRequest().authenticated())
+                                                .requestMatchers("/api/auth/**")
+                                                .permitAll()
+                                                .anyRequest()
+                                                .authenticated())
+
                                 .formLogin(form -> form
                                                 .loginProcessingUrl("/api/auth/login")
                                                 .successHandler(this::onAuthenticationSuccess)// 登录成功

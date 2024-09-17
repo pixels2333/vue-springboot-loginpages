@@ -36,9 +36,10 @@
  */
 package com.study.vue.service;
 
+import java.util.Random;
+
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -54,6 +55,7 @@ public class AuthorizeServiceImpl implements AuthorizeService {
     @Resource
     UserMapper mapper;
 
+    // 根据用户名加载用户信息，如果用户名为空或用户不存在，则抛出 UsernameNotFoundException 异常
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         if ((!StringUtils.hasLength(username) || username.trim().isEmpty()))
@@ -72,9 +74,13 @@ public class AuthorizeServiceImpl implements AuthorizeService {
                 .build();
 
     }
-
+    
+    @Override
     public boolean sendValidateEmail(String email) {
+        Random random = new Random();
+        int code = random.nextInt(899999)+100000;
         
+
         return true;
     }
 
