@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "VueApplication",
+            "request": "launch",
+            "mainClass": "com.study.vue.VueApplication",
+            "projectName": ""
+        },
+        {
+            "type": "java",
             "name": "Spring Boot-VueApplication<vue>",
             "request": "launch",
             "cwd": "${workspaceFolder}",

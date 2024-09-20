@@ -138,8 +138,7 @@ const register = () => {
 }
 
 const validateEmail = () => {
-
-  post('/api/auth/valid-email', { email: form.email },ElMessage.success('验证码发送成功'))
+  post('/api/auth/validate-email', { email: form.email },ElMessage.success('验证码发送成功'))
 }
 </script>
 

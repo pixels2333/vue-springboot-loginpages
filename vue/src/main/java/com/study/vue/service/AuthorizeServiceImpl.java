@@ -38,6 +38,10 @@ package com.study.vue.service;
 
 import java.util.Random;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.MailException;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -52,8 +56,14 @@ import jakarta.annotation.Resource;
 @Service
 public class AuthorizeServiceImpl implements AuthorizeService {
 
+    @Value("${spring.mail.username}")
+    String from;
+
     @Resource
     UserMapper mapper;
+
+    @Resource
+    MailSender mailSender;
 
     // 根据用户名加载用户信息，如果用户名为空或用户不存在，则抛出 UsernameNotFoundException 异常
     @Override
@@ -72,16 +82,27 @@ public class AuthorizeServiceImpl implements AuthorizeService {
                 .password(account.getPassword())
                 .roles("user")
                 .build();
-
     }
-    
+
     @Override
     public boolean sendValidateEmail(String email) {
         Random random = new Random();
-        int code = random.nextInt(899999)+100000;
-        
+        int code = random.nextInt(899999) + 100000;
 
-        return true;
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom(from);
+        message.setTo(email);
+        message.setSubject("您的验证邮件");
+        message.setText("验证码是:" + code);
+        try {
+            mailSender.send(message);
+            mailSender.send();
+            return true;
+        } catch (MailException e) {
+            e.printStackTrace();
+            return false;
+        }
+
     }
 
 }

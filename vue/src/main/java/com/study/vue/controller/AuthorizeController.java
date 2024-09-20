@@ -26,5 +26,6 @@ public class AuthorizeController {
             return RestBean.success("发送邮件成功");
         else
             return RestBean.failure(400, "发送邮件失败");
+
     }
 }
