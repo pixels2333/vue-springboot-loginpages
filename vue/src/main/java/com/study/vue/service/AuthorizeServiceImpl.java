@@ -36,9 +36,12 @@
  */
 package com.study.vue.service;
 
+import java.util.Optional;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
@@ -65,6 +68,9 @@ public class AuthorizeServiceImpl implements AuthorizeService {
     @Resource
     MailSender mailSender;
 
+    @Resource
+    StringRedisTemplate template;
+
     // 根据用户名加载用户信息，如果用户名为空或用户不存在，则抛出 UsernameNotFoundException 异常
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -85,7 +91,16 @@ public class AuthorizeServiceImpl implements AuthorizeService {
     }
 
     @Override
-    public boolean sendValidateEmail(String email) {
+    public boolean sendValidateEmail(String email, String sessionId) {
+        String key = "email:" + sessionId + ":" + email;
+
+        if (Boolean.TRUE.equals(template.hasKey(key))) {
+            long expire = Optional.ofNullable(template.getExpire(key, TimeUnit.SECONDS)).orElse(0L);
+            if (expire > 120)
+                return false;
+
+        }
+
         Random random = new Random();
         int code = random.nextInt(899999) + 100000;
 
@@ -96,6 +111,8 @@ public class AuthorizeServiceImpl implements AuthorizeService {
         message.setText("验证码是:" + code);
         try {
             mailSender.send(message);
+
+            template.opsForValue().set(key, String.valueOf(code), 60 * 10, java.util.concurrent.TimeUnit.SECONDS);
             mailSender.send();
             return true;
         } catch (MailException e) {

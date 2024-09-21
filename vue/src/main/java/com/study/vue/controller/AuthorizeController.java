@@ -10,6 +10,7 @@ import com.study.vue.entity.RestBean;
 import com.study.vue.service.AuthorizeService;
 
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
@@ -21,8 +22,8 @@ public class AuthorizeController {
     AuthorizeService service;
 
     @PostMapping("/validate-email")
-    public RestBean<String> validateEmail(@NotBlank @Email @RequestParam("email") String email) {
-        if (service.sendValidateEmail(email))
+    public RestBean<String> validateEmail(@NotBlank @Email @RequestParam("email") String email,HttpSession session) {
+        if (service.sendValidateEmail(email,session.getId()))
             return RestBean.success("发送邮件成功");
         else
             return RestBean.failure(400, "发送邮件失败");
