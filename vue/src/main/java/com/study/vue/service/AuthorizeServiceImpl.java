@@ -40,6 +40,7 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.mail.MailException;
@@ -48,6 +49,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -70,6 +72,8 @@ public class AuthorizeServiceImpl implements AuthorizeService {
 
     @Resource
     StringRedisTemplate template;
+    @Resource
+    BCryptPasswordEncoder encoder;
 
     // 根据用户名加载用户信息，如果用户名为空或用户不存在，则抛出 UsernameNotFoundException 异常
     @Override
@@ -91,16 +95,19 @@ public class AuthorizeServiceImpl implements AuthorizeService {
     }
 
     @Override
-    public boolean sendValidateEmail(String email, String sessionId) {
+    public String sendValidateEmail(String email, String sessionId) {
         String key = "email:" + sessionId + ":" + email;
 
         if (Boolean.TRUE.equals(template.hasKey(key))) {
             long expire = Optional.ofNullable(template.getExpire(key, TimeUnit.SECONDS)).orElse(0L);
             if (expire > 120)
-                return false;
+                return "验证码发送过于频繁";
 
         }
+        if (mapper.findAccountByNameOrEmail(email) != null) {
+            return "该邮箱已被注册";
 
+        }
         Random random = new Random();
         int code = random.nextInt(899999) + 100000;
 
@@ -112,13 +119,37 @@ public class AuthorizeServiceImpl implements AuthorizeService {
         try {
             mailSender.send(message);
 
-            template.opsForValue().set(key, String.valueOf(code), 60 * 10, java.util.concurrent.TimeUnit.SECONDS);
+            template.opsForValue().set(key, String.valueOf(code), 60 * 10, TimeUnit.SECONDS); // 设置10分钟过期
             mailSender.send();
-            return true;
+            return null;
         } catch (MailException e) {
             e.printStackTrace();
-            return false;
+            return "验证码发送失败";
         }
+
+    }
+
+    @Override
+    public String validateAndRegister(String username, String password, String email, String code, String sessionId) {
+
+        String key = "email:" + sessionId + ":" + email;
+        if (Boolean.TRUE.equals(template.hasKey(key))) {
+            String s = template.opsForValue().get(key);
+            if (s == null)
+                return "验证码已失效";
+
+            else if (s.equals(code)) {
+                password = encoder.encode(password);
+                if (mapper.creatAccount(username, password, email) > 0) {
+                    return null;
+
+                } else
+                    return "注册失败";
+
+            } else
+                return "验证码错误";
+        } else
+            return "请先发送验证码";
 
     }
 

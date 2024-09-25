@@ -14,6 +14,7 @@
  */
 package com.study.vue.mapper;
 
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -22,5 +23,7 @@ import com.study.vue.entity.Account;
 public interface UserMapper {
     @Select("select * from ad_account where username = #{text} or email = #{text}")
     Account findAccountByNameOrEmail(String text);
+    @Insert("insert into db_account(email,username,password) values(#{username},#{password},#{email})")
+    int creatAccount(String username, String password, String email);
 
 }
