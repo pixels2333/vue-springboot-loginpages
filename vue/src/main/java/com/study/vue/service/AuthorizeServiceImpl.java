@@ -40,7 +40,6 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.mail.MailException;
@@ -72,8 +71,8 @@ public class AuthorizeServiceImpl implements AuthorizeService {
 
     @Resource
     StringRedisTemplate template;
-    @Resource
-    BCryptPasswordEncoder encoder;
+
+    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     // 根据用户名加载用户信息，如果用户名为空或用户不存在，则抛出 UsernameNotFoundException 异常
     @Override

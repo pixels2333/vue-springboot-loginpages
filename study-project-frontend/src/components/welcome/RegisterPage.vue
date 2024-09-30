@@ -34,8 +34,12 @@
                 </el-input>
               </el-col>
               <el-col :span="7" :offset="0">
-                <el-button type="success" size="default" :disabled="!isEmailValid" @click="validateEmail">获取验证码</el-button>
+                <el-button type="success" size="default" :disabled="!isEmailValid || coldTime > 0"
+                  @click="validateEmail">
+                  {{ coldTime > 0 ? "请稍后" + coldTime + '秒' : '获取验证码' }}
+                </el-button>
               </el-col>
+
             </el-row>
           </el-form-item>
         </el-form>
@@ -119,6 +123,7 @@ const rules = {
 const formRef = ref()
 
 const isEmailValid = ref(false)//邮箱是否合法
+const coldTime = ref(0)//倒计时
 
 const onValidateEmail = (prop, isValid) => {
   if (prop === 'email')//邮箱验证
@@ -129,7 +134,8 @@ const register = () => {
   // ElMessage.info('测试')
   formRef.value.validate(isValid => {
     if (isValid) {
-      console.log(form)
+      post('/api/auth/register', form, message => ElMessage.success(message))
+      router.push('/')
     }
     else {
       ElMessage.error('请检查输入是否正确')
@@ -138,7 +144,17 @@ const register = () => {
 }
 
 const validateEmail = () => {
-  post('/api/auth/validate-email', { email: form.email },ElMessage.success('验证码发送成功'))
+  post('/api/auth/validate-email', { email: form.email }, (message) => {
+    ElMessage.success(message)
+    coldTime.value = 60
+    setInterval(() => { coldTime.value--, 1000 })
+    
+  }
+
+  )
+
+
+
 }
 </script>
 
