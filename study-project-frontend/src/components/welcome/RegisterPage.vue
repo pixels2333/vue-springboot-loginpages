@@ -30,7 +30,7 @@
             <el-row :gutter="10" style="width: 100%;">
               <el-col :span="17" :offset="0">
                 <el-input v-model="form.code" placeholder="请输入电子邮箱验证码" :prefix-icon="EditPen" size="default" clearable
-                  type="text" style="margin-top: 0px;">
+                  type="text"  style="margin-top: 0px;">
                 </el-input>
               </el-col>
               <el-col :span="7" :offset="0">
