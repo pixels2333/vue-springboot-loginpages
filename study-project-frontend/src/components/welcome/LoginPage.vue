@@ -25,7 +25,7 @@
                 <el-checkbox v-model="form.remember" label="记住我" :indeterminate="false"></el-checkbox>
             </el-col>
             <el-col :span="12" :offset="0" style="text-align: right;">
-                <el-link type="info" :underline="true" href="" target="_blank">忘记密码</el-link>
+                <el-link @click="router.push('/forget ')" type="info" :underline="true">忘记密码</el-link>
             </el-col>
         </el-row>
 
