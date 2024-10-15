@@ -59,7 +59,7 @@
 <script setup>
 import router from '@/router';
 import { User, Lock, Message, EditPen } from '@element-plus/icons-vue';
-import { ElMessage } from 'element-plus';
+// import { ElMessage } from 'element-plus';
 import { reactive } from 'vue';
 import { post } from '@/net';
 import { ref } from 'vue';

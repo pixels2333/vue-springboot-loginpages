@@ -1,6 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router' //导入vue-router
-import Vue from 'vue';
-import VueRouter from 'vue-router';
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
